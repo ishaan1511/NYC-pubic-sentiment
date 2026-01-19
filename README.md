@@ -107,3 +107,103 @@ Phase 1 produces the following reusable artifacts:
 
 These outputs are decoupled from raw data ingestion, enabling subsequent phases to operate directly on the semantic representation without reprocessing text.
 
+## 4. Phase 2 — Latent Theme Discovery
+
+### 4.1 Objective
+
+Phase 2 focuses on identifying **latent themes** within NYC 311 service requests by grouping semantically similar complaints in the embedding space generated in Phase 1. This approach enables the discovery of recurring urban issues without relying on predefined complaint categories.
+
+---
+
+### 4.2 Dimensionality Reduction
+
+To enable efficient clustering and interpretability, high-dimensional semantic embeddings are reduced to a lower-dimensional representation. This step preserves local semantic structure while removing noise and redundancy, and also supports visualization of latent complaint patterns.
+
+---
+
+### 4.3 Unsupervised Clustering
+
+Density-based clustering methods are applied to the reduced embedding space to identify natural groupings of complaints. This approach allows clusters of varying size and shape to emerge organically and automatically identifies rare or highly specific complaints as noise.
+
+Each service request is assigned either a latent theme label or a noise label, enabling flexible downstream analysis.
+
+---
+
+### 4.4 Theme Interpretation
+
+Discovered clusters are interpreted by examining representative complaint text, frequent descriptors, and distribution across agencies and locations. This process translates abstract clusters into **human-interpretable urban issue themes**.
+
+---
+
+### 4.5 Phase 2 Outputs
+
+Phase 2 produces:
+- A latent theme label for each service request  
+- Cluster-level summaries describing dominant urban issues  
+- Metadata linking themes to time, geography, and agencies  
+
+These outputs provide structured inputs for subsequent sentiment, temporal, and spatial analysis.
+
+---
+
+## 5. Phase 3 — Sentiment and Intensity Analysis
+
+### 5.1 Objective
+
+Phase 3 analyzes the **emotional tone and intensity** of complaint narratives to distinguish routine service requests from high-frustration or urgent issues. This phase adds an affective dimension to the latent themes identified in Phase 2.
+
+---
+
+### 5.2 Sentiment Modeling
+
+Pretrained sentiment models are applied to complaint text to estimate sentiment polarity and confidence scores. These measures capture not only whether a complaint is positive or negative, but also the strength of the expressed sentiment.
+
+---
+
+### 5.3 Aggregation and Interpretation
+
+Sentiment scores are aggregated across themes, agencies, and geographic regions to identify:
+- Themes associated with elevated frustration
+- Agencies receiving consistently negative feedback
+- Temporal shifts in public sentiment
+
+---
+
+### 5.4 Phase 3 Outputs
+
+Phase 3 produces:
+- Sentiment labels and scores for individual complaints  
+- Theme-level and agency-level sentiment summaries  
+- Identification of high-intensity complaint clusters  
+
+---
+
+## 6. Phase 4 — Temporal and Spatial Integration
+
+### 6.1 Objective
+
+Phase 4 integrates complaint themes and sentiment with **time and location** to analyze how urban issues evolve geographically and seasonally.
+
+---
+
+### 6.2 Temporal Analysis
+
+Service requests are aggregated over time to identify trends such as recurring seasonal issues, emerging complaint themes, and changes in public sentiment. Resolution times are also analyzed to evaluate responsiveness across agencies and issue types.
+
+---
+
+### 6.3 Spatial Analysis
+
+Complaints are mapped using geospatial coordinates and administrative boundaries, enabling comparison across boroughs, precincts, and community boards. Spatial patterns highlight localized issue hotspots and regional disparities in service outcomes.
+
+---
+
+### 6.4 Phase 4 Outputs
+
+Phase 4 produces:
+- Time-series trends by theme and sentiment  
+- Geographic distributions of complaint volume and intensity  
+- Resolution performance metrics across agencies and regions  
+
+---
+
