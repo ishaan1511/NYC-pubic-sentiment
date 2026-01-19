@@ -111,99 +111,114 @@ These outputs are decoupled from raw data ingestion, enabling subsequent phases 
 
 ### 4.1 Objective
 
-Phase 2 focuses on identifying **latent themes** within NYC 311 service requests by grouping semantically similar complaints in the embedding space generated in Phase 1. This approach enables the discovery of recurring urban issues without relying on predefined complaint categories.
+Phase 2 focuses on discovering **latent urban issue themes** within NYC 311 service requests by clustering semantically similar complaints.  
+Rather than relying on predefined complaint categories, this phase groups complaints based on **how residents describe issues in natural language**.
 
 ---
 
-### 4.2 Dimensionality Reduction
+### 4.2 Semantic Embedding Input
 
-To enable efficient clustering and interpretability, high-dimensional semantic embeddings are reduced to a lower-dimensional representation. This step preserves local semantic structure while removing noise and redundancy, and also supports visualization of latent complaint patterns.
-
----
-
-### 4.3 Unsupervised Clustering
-
-Density-based clustering methods are applied to the reduced embedding space to identify natural groupings of complaints. This approach allows clusters of varying size and shape to emerge organically and automatically identifies rare or highly specific complaints as noise.
-
-Each service request is assigned either a latent theme label or a noise label, enabling flexible downstream analysis.
+This phase operates directly on the dense semantic embeddings produced in Phase 1.  
+Each embedding represents a single service request constructed from complaint-related text fields, enabling similarity-based grouping without manual labeling.
 
 ---
 
-### 4.4 Theme Interpretation
+### 4.3 Dimensionality Reduction
 
-Discovered clusters are interpreted by examining representative complaint text, frequent descriptors, and distribution across agencies and locations. This process translates abstract clusters into **human-interpretable urban issue themes**.
+To improve clustering efficiency and interpretability, high-dimensional complaint embeddings are projected into a lower-dimensional space.  
+This step preserves local semantic relationships while reducing noise and computational complexity, and enables visualization of latent complaint structure.
 
 ---
 
-### 4.5 Phase 2 Outputs
+### 4.4 Unsupervised Clustering
 
-Phase 2 produces:
-- A latent theme label for each service request  
+Density-based clustering is applied to the reduced embedding space to identify natural groupings of semantically similar complaints.  
+This approach:
+- Discovers clusters of varying size and density  
+- Does not require specifying the number of themes in advance  
+- Identifies rare or highly specific complaints as noise  
+
+Each service request is assigned either a **cluster label** or a **noise label**, reflecting its membership in a latent theme.
+
+---
+
+### 4.5 Cluster-to-Theme Mapping
+
+Clusters are translated into **human-interpretable themes** by examining:
+- Representative complaint text within each cluster  
+- Frequently occurring complaint types and descriptors  
+- Distribution of clusters across agencies and locations  
+
+This mapping process converts abstract clusters into meaningful urban issue themes suitable for aggregation and analysis.
+
+---
+
+### 4.6 Phase 2 Outputs
+
+Phase 2 produces the following artifacts:
+- A cluster label for each service request  
+- A theme label derived from cluster interpretation  
 - Cluster-level summaries describing dominant urban issues  
-- Metadata linking themes to time, geography, and agencies  
 
-These outputs provide structured inputs for subsequent sentiment, temporal, and spatial analysis.
+These outputs serve as structured inputs for downstream temporal and spatial analysis.
 
 ---
 
-## 5. Phase 3 — Sentiment and Intensity Analysis
+## 5. Phase 3 — Temporal and Spatial Analysis
 
 ### 5.1 Objective
 
-Phase 3 analyzes the **emotional tone and intensity** of complaint narratives to distinguish routine service requests from high-frustration or urgent issues. This phase adds an affective dimension to the latent themes identified in Phase 2.
+Phase 3 integrates latent complaint themes with **time and location** to analyze how urban issues evolve across neighborhoods and over time.
 
 ---
 
-### 5.2 Sentiment Modeling
+### 5.2 Temporal Aggregation
 
-Pretrained sentiment models are applied to complaint text to estimate sentiment polarity and confidence scores. These measures capture not only whether a complaint is positive or negative, but also the strength of the expressed sentiment.
+Service requests are aggregated by month to examine:
+- Theme-level complaint trends  
+- Emerging or declining urban issues  
+- Seasonality in complaint patterns  
+
+Resolution-related metadata is also used to evaluate variation in service response across themes and agencies.
 
 ---
 
-### 5.3 Aggregation and Interpretation
+### 5.3 Spatial Aggregation
 
-Sentiment scores are aggregated across themes, agencies, and geographic regions to identify:
-- Themes associated with elevated frustration
-- Agencies receiving consistently negative feedback
-- Temporal shifts in public sentiment
+Complaints are analyzed across boroughs, council districts, and community boards to identify:
+- Geographic concentration of specific themes  
+- Persistent neighborhood-level issue patterns  
+- Cross-borough differences in service request composition  
+
+Spatial aggregation enables the identification of localized hotspots and regional disparities.
 
 ---
 
 ### 5.4 Phase 3 Outputs
 
 Phase 3 produces:
-- Sentiment labels and scores for individual complaints  
-- Theme-level and agency-level sentiment summaries  
-- Identification of high-intensity complaint clusters  
+- Time-series summaries of complaints by theme  
+- Geographic distributions of latent themes  
+- Inputs for interactive visualization and dashboarding  
 
----
+These outputs support exploratory analysis and policy-relevant insight generation.
 
-## 6. Phase 4 — Temporal and Spatial Integration
 
-### 6.1 Objective
+## 6. References
 
-Phase 4 integrates complaint themes and sentiment with **time and location** to analyze how urban issues evolve geographically and seasonally.
+1. **Sentence-BERT: Sentence Embeddings using Siamese BERT-Networks.**  
+   Proceedings of the 2019 Conference on Empirical Methods in Natural Language Processing.  
+   [https://arxiv.org/abs/1908.10084](https://arxiv.org/abs/1908.10084)
 
----
+2. *Sentence-Transformers.  
+   **all-MiniLM-L6-v2: General-purpose sentence embedding model.**  
+   Hugging Face Model Hub.  
+   [https://huggingface.co/sentence-transformers/all-MiniLM-L6-v2](https://huggingface.co/sentence-transformers/all-MiniLM-L6-v2)
 
-### 6.2 Temporal Analysis
+3. **HDBSCAN: Hierarchical Density-Based Clustering.**  
+   Journal of Open Source Software.  
+   [https://joss.theoj.org/papers/10.21105/joss.00205](https://joss.theoj.org/papers/10.21105/joss.00205)
 
-Service requests are aggregated over time to identify trends such as recurring seasonal issues, emerging complaint themes, and changes in public sentiment. Resolution times are also analyzed to evaluate responsiveness across agencies and issue types.
-
----
-
-### 6.3 Spatial Analysis
-
-Complaints are mapped using geospatial coordinates and administrative boundaries, enabling comparison across boroughs, precincts, and community boards. Spatial patterns highlight localized issue hotspots and regional disparities in service outcomes.
-
----
-
-### 6.4 Phase 4 Outputs
-
-Phase 4 produces:
-- Time-series trends by theme and sentiment  
-- Geographic distributions of complaint volume and intensity  
-- Resolution performance metrics across agencies and regions  
-
----
-
+4. New York City Open Data.  
+   **311 Service Requests from 2020 to Present.**  
+   [https://data.cityofnewyork.us/Social-Services/311-Service-Requests-from-2020-to-Present/erm2-nwe9/about_data](https://data.cityofnewyork.us/Social-Services/311-Service-Requests-from-2020-to-Present/erm2-nwe9/about_data)
