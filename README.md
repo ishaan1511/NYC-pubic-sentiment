@@ -6,6 +6,8 @@ This is a large-scale natural language processing (NLP) project that analyzes pu
 
 Rather than relying solely on predefined complaint categories, this project uses **semantic embeddings** to represent how residents describe problems in their own words. These representations are later connected to **time, location, and service outcomes** and visualized through an interactive city dashboard.
 
+The primary output of the project is an **interactive analytics dashboard** that enables exploration of complaint themes across boroughs and over time, highlighting emerging urban issues and geographic concentration patterns.
+
 This project blends:
 - NLP and representation learning
 - Public-sector data analysis
