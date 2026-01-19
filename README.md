@@ -71,49 +71,39 @@ These fields were chosen to preserve the **who, what, when, where, and outcome**
 
 ## 3. Phase 1 — Semantic Representation of Complaints
 
-### Objective
+### 3.1 Objective
 
-The goal of Phase 1 was to transform raw citizen complaint text into a **dense semantic representation** that captures meaning, similarity, and latent structure across millions of service requests.
-
-Rather than relying on predefined categories or keyword counts, this phase focuses on **how residents describe problems in their own words**.
+Phase 1 focuses on transforming raw NYC 311 complaint text into **dense semantic embeddings** that capture meaning and similarity across millions of service requests. Rather than relying on predefined complaint categories or keyword-based methods, this phase emphasizes **how residents describe issues in natural language**.
 
 ---
 
-### Text Construction
+### 3.2 Text Construction
 
 A unified text field was created for each service request by combining the following complaint-related columns:
 
-- `complaint_type`  
-- `descriptor`  
-- `descriptor_2`  
+- `complaint_type`
+- `descriptor`
+- `descriptor_2`
 
-These fields were concatenated in a consistent format, with missing values handled gracefully. This ensured that each complaint was represented by a single coherent textual description while preserving as much semantic detail as possible.
-
----
-
-### Semantic Embedding Approach
-
-Each complaint’s unified text was converted into a numerical vector using a **pretrained sentence embedding model**. This model maps semantically similar complaints to nearby points in vector space, even when they use different wording.
-
-Key characteristics of this approach:
-- Context-aware (goes beyond keywords)
-- Robust to spelling and phrasing variation
-- Scalable to millions of records
-- Produces fixed-length embeddings suitable for clustering and similarity search
-
-Embeddings were generated in batches with progress tracking to safely handle the dataset’s scale.
+These fields were concatenated in a consistent format, with missing values handled appropriately. This approach ensures that each complaint is represented by a single, coherent textual description while preserving relevant semantic detail.
 
 ---
 
-### Phase 1 Outputs
+### 3.3 Semantic Embeddings
 
-Phase 1 produces a reusable semantic layer that can be applied across multiple analyses:
+The unified complaint text was converted into numerical vectors using a **pretrained sentence embedding model**. This method maps semantically similar complaints to nearby points in vector space, even when different wording is used.
 
-- A matrix of dense embeddings representing each complaint
-- A metadata table aligned to the embeddings for joins and aggregation
-- A stable mapping between complaint identifiers and embedding rows
-
-These artifacts are intentionally decoupled from raw data ingestion, allowing downstream tasks to be performed without reprocessing text.
+Embeddings were generated in batches with progress tracking to safely scale to millions of records. The resulting vectors form a reusable semantic representation suitable for similarity search, clustering, and downstream analysis.
 
 ---
+
+### 3.4 Phase 1 Outputs
+
+Phase 1 produces the following reusable artifacts:
+
+- A matrix of dense embeddings representing each service request  
+- A metadata table aligned with the embeddings for aggregation and joins  
+- A stable mapping between service request identifiers and embedding rows  
+
+These outputs are decoupled from raw data ingestion, enabling subsequent phases to operate directly on the semantic representation without reprocessing text.
 
