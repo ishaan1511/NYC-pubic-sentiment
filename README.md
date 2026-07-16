@@ -1,6 +1,6 @@
 # NYC Public Sentiment
 
-## 1. Introduction
+## 1. Introduction    
 
 This is a large-scale natural language processing (NLP) project that analyzes public feedback from NYC’s 311 Service Request system to uncover **latent urban issues and citizen sentiment**.
 
@@ -109,7 +109,7 @@ Phase 1 produces the following reusable artifacts:
 
 These outputs are decoupled from raw data ingestion, enabling subsequent phases to operate directly on the semantic representation without reprocessing text.
 
-## 4. Phase 2 — Latent Theme Discovery
+## 4. Phase 2: Latent Theme Discovery
 
 ### 4.1 Objective
 
